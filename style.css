@@ -1,0 +1,25 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #eaf2d7;
+  text-align:center;
+}
+
+canvas {
+  display: block;
+}
+
+h1{
+  color:#e27396;
+  font-size: 350%;
+  text-align:center;
+}
+
+p1{
+  font-family:"Lucida Console", "Courier New", monospace;
+  /*font-size: 105%;*/
+}
+
+/* hide the pointers from palmPointers Plugin since we are drawing hands on canvas*/
+.handsfree-pointer{display:none !important}
+.handsfree-debugger{opacity: 0.25 !important}
