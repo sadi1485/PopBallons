@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
     
@@ -11,12 +11,19 @@
 
   </head>
   
-  <body>
-    <main>
+  <body>      
       <h1>HandsFree.js Testing</h1>
       <p1>I am testing the <i>handfree.js package</i> before getting started on my hand-controlled maze game to get more familiar with the library and coding the diffrent hand gestures required to control the game.</p1>
       <hr>
-    </main>
+    
+    <div class="container">
+<!--     <div class="fixed">Fixed width -->
+      <!-- I think main is what the HandsFree library targets -->
+          <main class="fixed"></main>        
+<!--     </div> -->
+    <div class="flex-item" id="debug-wrap">Waiting for Webcam to start...</div>
+</div>
+    
     <script src="sketch.js"></script>
   </body>
 </html>

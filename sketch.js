@@ -1,11 +1,11 @@
-
 const selectCameraIndex=0; // If you think there's more than one camera, pass in the index that you expect the desired one to be.
 var capture;
 var captureReady = false;
 var tracker;
 const devices = [];
 
-BearImage = "BearEmoji.png";
+
+
 Ballon1 = "Ballon1.png";
 Ballon2 = "Ballon2.png";
 Ballon3 = "Ballon3.png";
@@ -27,15 +27,26 @@ let prevPointer = [
 let fingertips = [4, 8, 12, 16, 20]
 
 function setup() {
+  
+  
   navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
+  sketch = createCanvas (640, 480);
+ 
+  // Move the canvas so it’s inside our <div id="sketch-holder">.
+  // canvas.parent('sketch-holder');
 
-  img = loadImage(BearImage);
+
+  // initialize visuals
   img1 = loadImage(Ballon1);
   img2 = loadImage(Ballon2);
   img3 = loadImage (Ballon3);
 
-  sketch = createCanvas (640, 480);
+
+  //----------------------------//
+  for(let i = 0; i < 30; i++){
+    displayImg.push(new Ballon());
+  }
 
   // Colors for each fingertip
   colorMap = [
@@ -45,45 +56,11 @@ function setup() {
     // Right fingertips
     [color(255, 179, 186), color(255, 179, 186), color(255, 179, 186), color(255, 179, 186), color(255, 179, 186)]
   ]
-  
-  // Turn on some models (hand tracking ) and the show debugger
-  handsfree = new Handsfree({
-    showDebug: true, // Comment this out to hide the default webcam feed with landmarks
-    hands: true
-  })
-  handsfree.enablePlugins('browser')
-  handsfree.plugin.pinchScroll.disable()
-  
-  // Add webcam buttons under the canvas
-  buttonStart = createButton('Start Webcam')
-  buttonStart.class('handsfree-show-when-stopped')
-  buttonStart.class ('handsfree-hide-when-loading')
-  buttonStart.mousePressed(() => handsfree.start())
-  
-  // Create a "loading..." butoon
-  buttonLoading = createButton('...loading...')
-  buttonLoading.class('handsfree-show-when-loading')
-  
-  // Create a stop button
-  buttonStop = createButton('Stop Webcam')
-  buttonStop.class('handsfree-show-when-started')
-  buttonStop.mousePressed(() => handsfree.stop())
-  
-
-  //----------------------------//
-  for(let i = 0; i < 30; i++){
-    displayImg.push(new Ballon());
-  }
 
 }
 
 function draw() {
-
-  // if the video stream isn't set up yet, don't do anything
-  //if (!captureReady) return;
-
-  // draw the current frame of video stream
-  //image(capture, 0, 0, w, h);
+  if (!captureReady) return;
 
   background(248, 229, 187);
   drawHands();
@@ -183,34 +160,55 @@ function drawHands(){
   })
   }
 
-  function changePicture(){
-    //if (hands?.pinchState) {return}
 
-    // Since the canvas is inside an Iframe, we reach out and get it's containing iframe's bounding rect
-    let bounds = document.querySelector('canvas').getClientRects()[0]
-    // Check for pinches and create dots if something is pinched
-    const hands = handsfree.data?.hands
+function startVideoAnalysis()
+{
+    // Turn on some models (hand tracking ) and the show debugger
+  handsfree = new Handsfree({
+    showDebug: true, // Comment this out to hide the default webcam feed with landmarks
+    hands: true});
+  
+  handsfree.enablePlugins('browser')
+  handsfree.plugin.pinchScroll.disable()
+  
+  // put the debug-video in a wrapper div  
+  // (first) remove the existing text
+  document.querySelector('#debug-wrap').innerHTML = "";
+  document.querySelector('#debug-wrap').appendChild(document.querySelector('.handsfree-debugger'));
+  
+  // Listen for the event
+document.addEventListener('handsfree-gotUserMedia', (event) => {
+  console.log("EVENT: handsfree-gotUserMedia" );
+  console.log(event.detail)
+})
+handsfree.on('gotUserMedia', (event) => {
+  console.log("EVENT: gotUserMedia" );
+  console.log(event)
+})
+  
+  // Add webcam buttons under the canvas
+  buttonStart = createButton('Start Webcam')
+  buttonStart.class('handsfree-show-when-stopped')
+  buttonStart.class ('handsfree-hide-when-loading')
+  buttonStart.mousePressed(() => handsfree.start())
+  
+  // Create a "loading..." butoon
+  buttonLoading = createButton('...loading...')
+  buttonLoading.class('handsfree-show-when-loading')
+  
+  // Create a stop button
+  buttonStop = createButton('Stop Webcam')
+  buttonStop.class('handsfree-show-when-started')
+  buttonStop.mousePressed(() => handsfree.stop())  
 
-    // Paint with fingers
-    if (hands?.pinchState) {
-      
-      //Clear everything if the left [0] pinky [3] is pinched
-      if (hands.pinchState[0][0] === 'released') {
-        img = loadImage("fox.png");
-      } else if(hands.pinchState[0][1] === 'released'){
-        img = loadImage("Ballon1.png");
-      }else if(hands.pinchState[0][2] === 'released'){
-        img = loadImage("Ballon2.png");
-      }else if(hands.pinchState[0][3] === 'released'){
-        img = loadImage("Ballon3.png");
-      }
-    }
-  }
+}
 
-  /***** CAMERA FUNCTION STUFF ******/
+/***** CAMERA FUNCTION STUFF ******/
 // function that gets "called back" (invoked) when devices have been discovered
 // will be passed an array of device info
 function gotDevices(deviceInfos) {
+
+  // iterate over the discovered devices to populate a dictionary of label, id info
   for (let i = 0; i < deviceInfos.length; i++) {
     const deviceInfo = deviceInfos[i];
     if (deviceInfo.kind == 'videoinput') {
@@ -220,12 +218,38 @@ function gotDevices(deviceInfos) {
       });
     }
   }
-  console.log(devices);
-  let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
-  console.log(supportedConstraints);
   
-  // use the discovered camera information to initialize the capture video stream
-  initCapture();
+  // print out the discovered devices
+  console.log(devices);
+
+  // let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+  // console.log(supportedConstraints);
+  
+  // check if we have camera permissions
+  navigator.permissions.query({ name: 'camera' })
+  .then(function(permissionStatus) {
+    if (permissionStatus.state === 'granted') {
+      // Camera access is granted
+      console.log( "camera access granted!");
+      
+      // start the video capture
+      initCapture();
+    } else {
+      // Camera access is not granted; request permission as needed
+      console.log( "camera access not granted");
+
+      navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        // Handle the camera stream now that we succeeded
+        // use the discovered camera information to initialize the capture video stream
+        initCapture();
+      })
+      .catch(function(error) {
+        // Handle errors, such as permission denied
+        console.log( error );
+      });
+    }
+  });  
 }
 
 function initCapture()
@@ -240,18 +264,26 @@ function initCapture()
             }
         }
       };
+  console.log( constraints);
+  
+    // p5 offers createCapture function, creates an HTML element that shows video stream
+    
   
     // p5 offers createCapture function, creates an HTML element that shows video stream
     capture = createCapture( constraints, 
-                        function() {
-                            console.log('capture ready.');
-                            captureReady = true;
-                            initTracker();
-                        } );
+                            function() {
+                                  console.log('capture ready: ' )
+                                  capture.elt.id = "captured-video";
+                                  console.log(capture.elt);
+                                  captureReady = true;
+                                  startVideoAnalysis(); // custom callback 
+                            });
+    
   
     capture.elt.setAttribute('playsinline', '');
-    createCanvas(w, h);
     capture.size(w, h);
     capture.hide();
 }
+
+
 /***** END CAMERA FUNCTION STUFF ******/
