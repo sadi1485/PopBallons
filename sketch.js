@@ -6,9 +6,9 @@ const devices = [];
 
 
 
-Ballon1 = "Ballon1.png";
-Ballon2 = "Ballon2.png";
-Ballon3 = "Ballon3.png";
+Balloon1 = "Balloon1.png";
+Balloon2 = "Balloon2.png";
+Balloon3 = "Balloon3.png";
 let displayImg = [];
 var w = 640,
     h = 480, 
@@ -38,9 +38,9 @@ function setup() {
 
 
   // initialize visuals
-  img1 = loadImage(Ballon1);
-  img2 = loadImage(Ballon2);
-  img3 = loadImage (Ballon3);
+  img1 = loadImage(Balloon1);
+  img2 = loadImage(Balloon2);
+  img3 = loadImage (Balloon3);
 
 
   //----------------------------//
@@ -85,8 +85,20 @@ function draw() {
     
       // text('distance' + displayImg[i].contains(xcor, ycor), 10, 50, 90);
     }
+    
+    if (displayImg.length == 0){
+      
+      //----------------------------//
+    
+      addBallons();}
 
 })
+}
+
+function addBallons(){
+  for(let i = 0; i < 30; i++){
+    displayImg.push(new Ballon());
+  }
 }
 
 class Ballon {
