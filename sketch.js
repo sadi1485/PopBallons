@@ -43,7 +43,7 @@ function setup() {
   img3 = loadImage (Balloon3);
 
   //----------------------------//
-  for(let i = 0; i < 1; i++){
+  for(let i = 0; i < 30; i++){
     displayImg.push(new Balloon());
   }
 
@@ -98,7 +98,7 @@ function draw() {
 }
 
 function addBalloons(){
-      for(let i = 0; i < 1; i++){
+      for(let i = 0; i < 30; i++){
           displayImg.push(new Balloon());
       }
 }
