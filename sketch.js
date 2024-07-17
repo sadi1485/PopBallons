@@ -6,9 +6,9 @@ const devices = [];
 
 let song;
 
-Balloon1 = "Ballon1.png";
-Balloon2 = "Ballon2.png";
-Balloon3 = "Ballon3.png";
+Balloon1 = "Balloon1.png";
+Balloon2 = "Balloon2.png";
+Balloon3 = "Balloon3.png";
 let displayImg = [];
 var w = 640,
     h = 480, 
