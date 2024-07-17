@@ -10,7 +10,7 @@ Balloon1 = "Balloon1.png";
 Balloon2 = "Balloon2.png";
 Balloon3 = "Balloon3.png";
 let displayImg = [];
-var w = 640,
+var w = 500,
     h = 480, 
     x = 17,
     y = 17;
@@ -32,7 +32,7 @@ function setup() {
   song = loadSound("assets/soft-balloon-pop.mp3")
   navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
-  sketch = createCanvas (660, 480);
+  sketch = createCanvas (w, h);
  
   // Move the canvas so it’s inside our <div id="sketch-holder">.
   // canvas.parent('sketch-holder');
