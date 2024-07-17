@@ -32,7 +32,7 @@ function setup() {
   song = loadSound("assets/soft-balloon-pop.mp3")
   navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
-  sketch = createCanvas (640, 480);
+  sketch = createCanvas (660, 480);
  
   // Move the canvas so it’s inside our <div id="sketch-holder">.
   // canvas.parent('sketch-holder');
