@@ -1,19 +1,21 @@
-const selectCameraIndex=0; // If you think there's more than one camera, pass in the index that you expect the desired one to be.
+const selectCameraIndex=1; // If you think there's more than one camera, pass in the index that you expect the desired one to be.
 var capture;
 var captureReady = false;
 var tracker;
 const devices = [];
 
+let song;
 
-
-Balloon1 = "Balloon1.png";
-Balloon2 = "Balloon2.png";
-Balloon3 = "Balloon3.png";
+Balloon1 = "Ballon1.png";
+Balloon2 = "Ballon2.png";
+Balloon3 = "Ballon3.png";
 let displayImg = [];
 var w = 640,
     h = 480, 
     x = 17,
     y = 17;
+
+var displayText = false;
 
 // Pointers for every finger [thumb, pointer, middle, ring, pinky]
 let prevPointer = [
@@ -27,8 +29,7 @@ let prevPointer = [
 let fingertips = [4, 8, 12, 16, 20]
 
 function setup() {
-  
-  
+  song = loadSound("assets/soft-balloon-pop.mp3")
   navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
   sketch = createCanvas (640, 480);
@@ -36,16 +37,14 @@ function setup() {
   // Move the canvas so it’s inside our <div id="sketch-holder">.
   // canvas.parent('sketch-holder');
 
-
   // initialize visuals
   img1 = loadImage(Balloon1);
   img2 = loadImage(Balloon2);
   img3 = loadImage (Balloon3);
 
-
   //----------------------------//
-  for(let i = 0; i < 30; i++){
-    displayImg.push(new Ballon());
+  for(let i = 0; i < 1; i++){
+    displayImg.push(new Balloon());
   }
 
   // Colors for each fingertip
@@ -56,6 +55,8 @@ function setup() {
     // Right fingertips
     [color(255, 179, 186), color(255, 179, 186), color(255, 179, 186), color(255, 179, 186), color(255, 179, 186)]
   ]
+  
+  textSize(25);
 
 }
 
@@ -78,34 +79,35 @@ function draw() {
     
     for(let i = 0; i < displayImg.length; i++){
       if (displayImg[i].contains(xcor, ycor)){
-        // text('On Ballon', 5, 50, 90);
         displayImg.splice(i, 1);
+        console.log("Song:" + song);
+        song.play();
       }
-      // text('Coordinates' + displayImg[i].getX() + ',' + displayImg[i].getY(), 1, 150, 90);
-    
-      // text('distance' + displayImg[i].contains(xcor, ycor), 10, 50, 90);
-    }
-    
-    if (displayImg.length == 0){
-      
-      //----------------------------//
-    
-      addBallons();}
+    } 
 
 })
-}
-
-function addBallons(){
-  for(let i = 0; i < 30; i++){
-    displayImg.push(new Ballon());
-  }
-}
-
-class Ballon {
   
+  if (displayImg.length == 0){
+      text ('You popped all the balloons! ᕦʕ •`ᴥ•´ʔᕤ', w/7, h/2, 2000, 2000);
+    setTimeout(addBalloons, 1000);
+    } 
+
+  
+    
+    
+}
+
+function addBalloons(){
+      for(let i = 0; i < 1; i++){
+          displayImg.push(new Balloon());
+      }
+}
+
+class Balloon {
+
   constructor (){
-    let ballons = [img1, img2, img3];
-    let choice = random(ballons);
+    let balloons = [img1, img2, img3];
+    let choice = random(balloons);
     this.img = choice;
     this.x = random(w-100);
     this.y = random(h-100);

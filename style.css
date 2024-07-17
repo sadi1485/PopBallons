@@ -32,4 +32,4 @@ p1{
 
 /* hide the pointers from palmPointers Plugin since we are drawing hands on canvas*/
 .handsfree-pointer{display:none !important}
-.handsfree-debugger{opacity: 0.25; float: right; width: 90% !important}
+.handsfree-debugger{opacity: 0.25; float: right; width: 80% !important}
