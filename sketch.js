@@ -88,9 +88,14 @@ function draw() {
 })
   
   if (displayImg.length == 0){
-      text ('You popped all the balloons! ᕦʕ •`ᴥ•´ʔᕤ', w/7, h/2, 2000, 2000);
+    displayText = true;
+      
+  } 
+  if (displayText == true){
+    text ('You popped all the balloons! ᕦʕ •`ᴥ•´ʔᕤ', w/7, h/2, 2000, 2000);
     setTimeout(addBalloons, 1000);
-    } 
+  }
+  
 
   
     
@@ -98,9 +103,10 @@ function draw() {
 }
 
 function addBalloons(){
-      for(let i = 0; i < 30; i++){
-          displayImg.push(new Balloon());
-      }
+  for(let i = 0; i < 30; i++){
+    displayImg.push(new Balloon());
+  }
+  displayText = false;
 }
 
 class Balloon {
