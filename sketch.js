@@ -1,4 +1,4 @@
-const selectCameraIndex=0; // If you think there's more than one camera, pass in the index that you expect the desired one to be.
+const selectCameraIndex=1; // If you think there's more than one camera, pass in the index that you expect the desired one to be.
 var capture;
 var captureReady = false;
 var tracker;
@@ -103,10 +103,11 @@ function draw() {
 }
 
 function addBalloons(){
+  displayText = false;
   for(let i = 0; i < 30; i++){
     displayImg.push(new Balloon());
   }
-  displayText = false;
+  
 }
 
 class Balloon {
